@@ -6,8 +6,7 @@ local Mouse = LocalPlayer:GetMouse()
 -- Function to find the closest enemy player
 function getClosestEnemyPlayer()
     local closestPlayer = nil
-    local closestDistance = math.huge
-    
+    local closestDistance = math.huge 
     -- Iterate through all players
     for _, player in pairs(Players:GetPlayers()) do
         if player ~= LocalPlayer and player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
@@ -22,10 +21,8 @@ function getClosestEnemyPlayer()
             end
         end
     end
-
-    return closestPlayer
+       return closestPlayer
 end
-
 -- Auto-locking function
 function autoLockOnPlayer()
     local closestPlayer = getClosestEnemyPlayer()
@@ -34,7 +31,6 @@ function autoLockOnPlayer()
         Mouse.Target = closestPlayer.Character.HumanoidRootPart
     end
 end
-
 -- Run the auto-lock function at a regular interval
 while true do
     wait(0.1)  -- Adjust the wait time for responsiveness
