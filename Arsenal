@@ -1,0 +1,42 @@
+-- This script assumes that you have some sort of object that can "lock" onto a player (like a part or tool)
+local Players = game:GetService("Players")
+local LocalPlayer = Players.LocalPlayer
+local Mouse = LocalPlayer:GetMouse()
+
+-- Function to find the closest enemy player
+function getClosestEnemyPlayer()
+    local closestPlayer = nil
+    local closestDistance = math.huge
+    
+    -- Iterate through all players
+    for _, player in pairs(Players:GetPlayers()) do
+        if player ~= LocalPlayer and player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+            -- Ensure that the player is not on the same team
+            if player.Team ~= LocalPlayer.Team then
+                -- Calculate the distance to the current player
+                local distance = (player.Character.HumanoidRootPart.Position - LocalPlayer.Character.HumanoidRootPart.Position).Magnitude
+                if distance < closestDistance then
+                    closestDistance = distance
+                    closestPlayer = player
+                end
+            end
+        end
+    end
+
+    return closestPlayer
+end
+
+-- Auto-locking function
+function autoLockOnPlayer()
+    local closestPlayer = getClosestEnemyPlayer()
+    if closestPlayer then
+        -- If a player is found, set the mouse position to the closest player's position
+        Mouse.Target = closestPlayer.Character.HumanoidRootPart
+    end
+end
+
+-- Run the auto-lock function at a regular interval
+while true do
+    wait(0.1)  -- Adjust the wait time for responsiveness
+    autoLockOnPlayer()
+end
